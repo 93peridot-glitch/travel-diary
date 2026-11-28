@@ -296,6 +296,28 @@ button.trip.add{border:2px dashed var(--coral);background:transparent;box-shadow
 .stamp[aria-pressed="true"]{color:#fff;background:var(--coral-deep);border:2px solid var(--coral-deep);transform:rotate(-2deg);font-weight:700}
 :root[data-theme="dark"] .stamp[aria-pressed="true"]{color:#2d2227}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .stamp[aria-pressed="true"]{color:#2d2227}}
+
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+@media (max-width:480px){
+  body{padding-left:max(8px,env(safe-area-inset-left,0px));padding-right:max(8px,env(safe-area-inset-right,0px))}
+  .sheet{border-width:5px;border-radius:22px;padding:14px 11px;gap:20px}
+  .sheet.cv{padding:0}
+  .cover{padding:38px 14px 20px;gap:22px;min-height:0}
+  .cf{grid-template-columns:62px minmax(0,1fr);gap:6px}
+  .cf>b{font-size:18px}
+  .cf .dates{gap:4px;flex-wrap:nowrap}
+  .cf .dates .cin{flex:1 1 0;min-width:0;font-size:15px;letter-spacing:-.02em}
+  .cf .dates .cin::-webkit-calendar-picker-indicator{display:none}
+  .cin{font-size:19px}
+  .card{padding:10px 10px}
+  .brand h1{font-size:22px}
+  .tabs a{padding:3px 11px;font-size:16px}
+  .ttl{font-size:23px}
+  .ln .cs{flex:1 1 90px}.ln .am{flex:1 1 90px}.ln .pm{flex:1 1 70px}.ln .cu{flex:1 1 70px}
+  .bd .am{flex:0 0 92px}
+  .hr .tm{flex:0 0 48px;width:48px}
+  .modal .mbox{padding:20px 16px 16px}
+}
 </style>
 
 <div class="app">
@@ -1440,7 +1462,7 @@ button.trip.add{border:2px dashed var(--coral);background:transparent;box-shadow
   function bu(id){return id&&String(id).indexOf('data:')===0?id:'/_blob/'+id}
   function localClaude(){
     var KEY='traveldiary:v1',st={};
-    var VER='v6';var vs=document.createElement('span');vs.className='hint';vs.textContent=VER+' · 저장 항목 '+Object.keys(st).length+'개';vs.style.marginLeft='8px';
+    var VER='v8';var vs=document.createElement('span');vs.className='hint';vs.textContent=VER+' · 저장 항목 '+Object.keys(st).length+'개';vs.style.marginLeft='8px';
     setTimeout(function(){var h=$('save');if(h&&h.parentNode)h.parentNode.appendChild(vs)},0);
     var okStore=true;
     try{localStorage.setItem('td:test','1');if(localStorage.getItem('td:test')!=='1')okStore=false;localStorage.removeItem('td:test')}catch(e){okStore=false}
