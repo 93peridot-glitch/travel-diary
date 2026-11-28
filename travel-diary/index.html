@@ -1458,7 +1458,7 @@ button.trip.add{border:2px dashed var(--coral);background:transparent;box-shadow
         set:function(d){st[p]=JSON.parse(JSON.stringify(d));persist();fire();return Promise.resolve()},
         update:function(d){st[p]=deep(st[p]||{},JSON.parse(JSON.stringify(d)));persist();return Promise.resolve()},
         delete:function(){delete st[p];persist();fire();return Promise.resolve()},
-        onSnapshot:function(cb){var f=function(){cb({exists:!!st[p],data:function(){return JSON.parse(JSON.stringify(st[p]||{}))},metadata:{hasPendingWrites:true}})};f();return function(){}}
+        onSnapshot:function(cb){var f=function(){cb({exists:!!st[p],data:function(){return JSON.parse(JSON.stringify(st[p]||{}))},metadata:{hasPendingWrites:false}})};f();return function(){}}
       }},
       collection:function(c){return{onSnapshot:function(cb){var f=function(){cb(snapOf(c))};subs.push(f);f();return function(){}}}}
     };
