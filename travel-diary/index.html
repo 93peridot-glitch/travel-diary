@@ -1,5 +1,5 @@
 <title>여행경비 노트</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="claude:viewport-fit-sides" content="cover"><meta http-equiv="Cache-Control" content="no-cache">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
 <style>
 /* Layout: 코랄 테두리 플래너 한 권. 상단 PLAN | JOURNAL | MORE 탭. 페이지마다 파스텔 카드와 괘선 노트 줄, 손글씨체 보라 잉크 */
@@ -1439,6 +1439,8 @@ button.trip.add{border:2px dashed var(--coral);background:transparent;box-shadow
   function bu(id){return id&&String(id).indexOf('data:')===0?id:'/_blob/'+id}
   function localClaude(){
     var KEY='traveldiary:v1',st={};
+    var VER='v5';var vs=document.createElement('span');vs.className='hint';vs.textContent=VER+' · 저장 항목 '+Object.keys(st).length+'개';vs.style.marginLeft='8px';
+    setTimeout(function(){var h=$('save');if(h&&h.parentNode)h.parentNode.appendChild(vs)},0);
     var okStore=true;
     try{localStorage.setItem('td:test','1');if(localStorage.getItem('td:test')!=='1')okStore=false;localStorage.removeItem('td:test')}catch(e){okStore=false}
     if(!okStore)setTimeout(function(){showStatus('⚠ 이 브라우저가 저장을 막고 있어요. 비공개 모드이거나 사이트 데이터 저장이 꺼져 있을 수 있어요. 일반 Safari 창에서 열어 주세요.')},800);
