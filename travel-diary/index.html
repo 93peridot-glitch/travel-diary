@@ -1468,8 +1468,18 @@ button.trip.add{border:2px dashed var(--coral);background:transparent;box-shadow
       bar.innerHTML='<button type="button" class="addb" id="bk-out" style="margin:0">백업 저장</button><label class="addb" style="margin:0;cursor:pointer">백업 불러오기<input type="file" id="bk-in" accept=".json,application/json" style="display:none"></label><span class="hint">다른 기기로 옮길 때 써요</span>';
       var tabs=$('tabs');tabs.parentNode.insertBefore(bar,tabs);
       $('bk-out').onclick=function(){
-        var d=new Date(),n='여행다이어리백업-'+d.getFullYear()+pad2(d.getMonth()+1)+pad2(d.getDate())+'.json';
-        var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({app:'travel-diary',data:st})],{type:'application/json'}));a.download=n;document.body.appendChild(a);a.click();a.remove();setSave('백업 파일을 저장했어요');
+        var btn=this,d=new Date(),n='여행다이어리백업-'+d.getFullYear()+pad2(d.getMonth()+1)+pad2(d.getDate())+'.json';
+        btn.disabled=true;setSave('백업 파일 만드는 중…');
+        setTimeout(function(){
+          var txt,blob,file=null;
+          try{txt=JSON.stringify({app:'travel-diary',data:st});blob=new Blob([txt],{type:'application/json'});try{file=new File([blob],n,{type:'application/json'})}catch(x){}}
+          catch(x){btn.disabled=false;setSave('백업 파일을 만들지 못했어요');return}
+          var done=function(m){btn.disabled=false;setSave(m)};
+          var dl=function(){var u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=n;a.rel='noopener';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},60000);done('백업 파일을 저장했어요 (다운로드 폴더 확인)')};
+          if(file&&navigator.canShare&&navigator.canShare({files:[file]})){
+            navigator.share({files:[file],title:n}).then(function(){done('백업을 보냈어요')}).catch(function(e){if(e&&e.name==='AbortError')done('취소했어요');else dl()});
+          }else dl();
+        },30);
       };
       $('bk-in').onchange=function(e){
         var f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
