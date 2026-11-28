@@ -496,7 +496,7 @@ button.trip.add{border:2px dashed var(--coral);background:transparent;box-shadow
   function stk(path){var id=getIn(S,path)||'',k=IC.filter(function(x){return x.id===id})[0]||IC[0];
     return '<button type="button" class="stk'+(id?'':' none')+'" data-ic="'+path+'" style="--bgc:'+k.bg+'" aria-label="교통수단 스티커 바꾸기"'+(canWrite?'':' disabled')+'>'+(id?icon(id):'+')+'</button>'}
   function imgSlot(path,label){var id=getIn(S,path);
-    var inner=id?'<img src="/_blob/'+esc(id)+'" alt="'+esc(label)+'">':'<span class="hint">'+esc(label)+'</span>';
+    var inner=id?'<img src="'+esc(bu(id))+'" alt="'+esc(label)+'">':'<span class="hint">'+esc(label)+'</span>';
     var ctl=assets&&canWrite?'<label class="filebtn">'+(id?'바꾸기':'+ 사진')+'<input type="file" accept="image/*" data-imgup="'+path+'"></label>'+(id?'<button type="button" class="addb" style="margin:0" data-imgdel="'+path+'">지우기</button>':''):(!id&&!assets?'<span class="hint">사진은 편집 권한이 있을 때 올릴 수 있어요</span>':'');
     return '<div class="img">'+inner+'<div class="ictl">'+ctl+'</div></div>'}
   function isDom(){var s=S.s;return s.kind==='dom'||(s.kind!=='os'&&blank(s.rate)&&blank(s.cur)&&blank(s.rate2)&&blank(s.cur2))}
@@ -579,7 +579,7 @@ button.trip.add{border:2px dashed var(--coral);background:transparent;box-shadow
     var line=pts.length>1?'<svg class="mline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline points="'+pts.join(' ')+'" fill="none" stroke="#ef5350" stroke-width="2" stroke-dasharray="4 3" vector-effect="non-scaling-stroke"/></svg>':'';
     var chips='';for(var j=1;j<=8;j++){chips+='<button type="button" class="chip pinchip" data-pinarm="'+j+'" aria-pressed="'+(pinArm===j)+'"'+dis+'>'+j+(blank(getIn(S,'days.'+dk+'.rt.p'+j))?'':'<span class="pd"></span>')+'</button>'}
     var ctl=canWrite&&assets?'<label class="filebtn">바꾸기<input type="file" accept="image/*" data-imgup="'+p+'"></label><button type="button" class="addb" style="margin:0" data-imgdel="'+p+'">지우기</button>':'';
-    return '<div class="img" style="padding:6px"><div class="mapwrap'+(pinArm?' armed':'')+'" data-mappin="1"><img src="/_blob/'+esc(id)+'" alt="지도 이미지">'+line+pins+'</div><div class="ictl">'+ctl+'</div></div>'+
+    return '<div class="img" style="padding:6px"><div class="mapwrap'+(pinArm?' armed':'')+'" data-mappin="1"><img src="'+esc(bu(id))+'" alt="지도 이미지">'+line+pins+'</div><div class="ictl">'+ctl+'</div></div>'+
       '<div class="pinbar"><span class="hint">핀 놓기</span>'+chips+((pinArm&&!blank(getIn(S,'days.'+dk+'.rt.p'+pinArm)))?'<button type="button" class="addb" style="margin:0" data-pinclear="'+pinArm+'">핀 '+pinArm+' 지우기</button>':'')+'</div>'+
       '<p class="hint">'+(pinArm?pinArm+'번 핀: 지도를 눌러 놓아요':'번호를 고른 뒤 지도를 누르면 그 자리에 핀이 놓여요. 장소 이름은 동선에 적어요')+'</p>';
   }
@@ -604,7 +604,7 @@ button.trip.add{border:2px dashed var(--coral);background:transparent;box-shadow
     var oyv=getIn(S,'days.'+dk+'.mp.m'+m+'.oy'),oy=blank(oyv)?50:num(oyv);
     var pan='<span class="panbox"><span class="hint">위·아래</span><input type="range" min="0" max="100" value="'+oy+'" class="panr" data-pany="'+m+'" aria-label="지도 위아래 위치"'+(canWrite?'':' disabled')+'></span><button type="button" class="addb" style="margin:0" data-mapfull="'+m+'">'+(mapFull[m]?'줄여 보기':'전체 보기')+'</button>';
     var ctl=canWrite&&assets?'<label class="filebtn">바꾸기<input type="file" accept="image/*" data-imgup="'+p+'"></label><button type="button" class="addb" style="margin:0" data-imgdel="'+p+'">지우기</button>':'';
-    return '<div class="img" style="padding:6px"><div class="mapclip" data-mapclip="'+m+'"><div class="mapwrap'+(pinArm?' armed':'')+'" data-mappin="'+m+'"><img src="/_blob/'+esc(id)+'" alt="지도 '+m+' 이미지"><svg class="mline" aria-hidden="true"></svg>'+pins+'</div></div><div class="ictl">'+pan+ctl+'</div></div>'+
+    return '<div class="img" style="padding:6px"><div class="mapclip" data-mapclip="'+m+'"><div class="mapwrap'+(pinArm?' armed':'')+'" data-mappin="'+m+'"><img src="'+esc(bu(id))+'" alt="지도 '+m+' 이미지"><svg class="mline" aria-hidden="true"></svg>'+pins+'</div></div><div class="ictl">'+pan+ctl+'</div></div>'+
       (placed?'<div class="pinbar"><span class="hint">놓은 핀 (누르면 지워져요)</span>'+placed+'</div>':'')+
       '<p class="hint">'+(pinArm?pinArm+'번 핀: 이 지도를 눌러 놓아요. 다시 누르면 위치가 옮겨져요':'왼쪽 동선의 "핀" 버튼을 누른 뒤 지도를 눌러 보세요')+'</p>';
   }
@@ -671,7 +671,7 @@ button.trip.add{border:2px dashed var(--coral);background:transparent;box-shadow
     }
     var pan='<span class="panbox"><button type="button" class="pinb" data-mapzoom="'+m+'|-" aria-label="지도 축소">－</button><button type="button" class="pinb" data-mapzoom="'+m+'|+" aria-label="지도 확대">＋</button><button type="button" class="pinb" data-mapzoom="'+m+'|0">맞춤</button></span><button type="button" class="addb" style="margin:0" data-mapfull="'+m+'">'+(mapFull[m]?'줄여 보기':'전체 보기')+'</button>';
     var ctl=canWrite&&assets?'<label class="filebtn">바꾸기<input type="file" accept="image/*" data-imgup="'+p+'"></label><button type="button" class="addb" style="margin:0" data-imgdel="'+p+'">지우기</button>':'';
-    return '<div class="img" style="padding:6px"><div class="mapclip" data-mapclip="'+m+'"><div class="mapwrap'+(pinArm?' armed':'')+'" data-mappin="'+m+'"><img src="/_blob/'+esc(id)+'" alt="지도 '+m+' 이미지" draggable="false"><svg class="mline" aria-hidden="true"></svg>'+pins+'</div></div><div class="ictl">'+pan+ctl+'</div></div>'+
+    return '<div class="img" style="padding:6px"><div class="mapclip" data-mapclip="'+m+'"><div class="mapwrap'+(pinArm?' armed':'')+'" data-mappin="'+m+'"><img src="'+esc(bu(id))+'" alt="지도 '+m+' 이미지" draggable="false"><svg class="mline" aria-hidden="true"></svg>'+pins+'</div></div><div class="ictl">'+pan+ctl+'</div></div>'+
       (placed?'<div class="pinbar"><span class="hint">놓은 핀 (누르면 지워져요)</span>'+placed+'</div>':'')+
       '<p class="hint">'+(pinArm?pinArm+'번 핀: 이 지도를 눌러 놓아요. 끝어서 지도를 옮길 수도 있어요':'지도를 끌어서 자유롭게 옮기고, ＋ －로 확대·축소해요. 핀은 왼쪽 동선의 "핀" 버튼을 누른 뒤 지도를 눌러 놓아요')+'</p>';
   }
@@ -708,7 +708,7 @@ button.trip.add{border:2px dashed var(--coral);background:transparent;box-shadow
       if(canWrite)placed+='<button type="button" class="pinchip2" data-pinclear2="'+m+'|'+i+'" aria-label="지도 '+m+'의 '+i+'번 핀 지우기">'+i+' ×</button>';
     }
     var ctl=canWrite&&assets?'<label class="filebtn">바꾸기<input type="file" accept="image/*" data-imgup="'+p+'"></label><button type="button" class="addb" style="margin:0" data-imgdel="'+p+'">지우기</button>':'';
-    return '<div class="img" style="padding:6px"><div class="mapwrap'+(pinArm?' armed':'')+'" data-mappin="'+m+'"><img src="/_blob/'+esc(id)+'" alt="지도 '+m+' 이미지"><svg class="mline" aria-hidden="true"></svg>'+pins+'</div><div class="ictl">'+ctl+'</div></div>'+
+    return '<div class="img" style="padding:6px"><div class="mapwrap'+(pinArm?' armed':'')+'" data-mappin="'+m+'"><img src="'+esc(bu(id))+'" alt="지도 '+m+' 이미지"><svg class="mline" aria-hidden="true"></svg>'+pins+'</div><div class="ictl">'+ctl+'</div></div>'+
       (placed?'<div class="pinbar"><span class="hint">놓은 핀 (누르면 지워져요)</span>'+placed+'</div>':'')+
       '<p class="hint">'+(pinArm?pinArm+'번 핀: 이 지도를 눌러 놓아요. 다시 누르면 위치가 옮겨져요':'왼쪽 동선의 "핀" 버튼을 누른 뒤 지도를 눌러 보세요')+'</p>';
   }
@@ -754,7 +754,7 @@ button.trip.add{border:2px dashed var(--coral);background:transparent;box-shadow
       pins+='<span class="mpin" style="left:'+esc(xy[0])+'%;top:'+esc(xy[1])+'%"><span class="pn mini"><b>'+i+'</b></span>'+(nm?'<em>'+esc(nm)+'</em>':'')+'</span>';
     }
     var ctl=canWrite&&assets?'<label class="filebtn">바꾸기<input type="file" accept="image/*" data-imgup="'+p+'"></label><button type="button" class="addb" style="margin:0" data-imgdel="'+p+'">지우기</button>':'';
-    return '<div class="img" style="padding:6px"><div class="mapwrap'+(pinArm?' armed':'')+'" data-mappin="1"><img src="/_blob/'+esc(id)+'" alt="지도 이미지"><svg class="mline" id="rtsvg" aria-hidden="true"></svg>'+pins+'</div><div class="ictl">'+ctl+'</div></div>'+
+    return '<div class="img" style="padding:6px"><div class="mapwrap'+(pinArm?' armed':'')+'" data-mappin="1"><img src="'+esc(bu(id))+'" alt="지도 이미지"><svg class="mline" id="rtsvg" aria-hidden="true"></svg>'+pins+'</div><div class="ictl">'+ctl+'</div></div>'+
       '<p class="hint">'+(pinArm?pinArm+'번 핀: 지도를 눌러 놓아요. 다시 누르면 위치가 옮겨져요':'왼쪽 동선의 "핀" 버튼을 누른 뒤 지도를 눌러 보세요')+'</p>';
   }
   function routeMapHtml2(dk,maps,mapBtns){
@@ -780,7 +780,7 @@ button.trip.add{border:2px dashed var(--coral);background:transparent;box-shadow
       pins+='<span class="mpin" style="left:'+esc(xy[0])+'%;top:'+esc(xy[1])+'%"><span class="pn mini"><b>'+i+'</b></span>'+(nm?'<em>'+esc(nm)+'</em>':'')+'</span>';
     }
     var ctl=canWrite&&assets?'<label class="filebtn">바꾸기<input type="file" accept="image/*" data-imgup="'+p+'"></label><button type="button" class="addb" style="margin:0" data-imgdel="'+p+'">지우기</button>':'';
-    return '<div class="img" style="padding:6px"><div class="mapwrap'+(pinArm?' armed':'')+'" data-mappin="1"><img src="/_blob/'+esc(id)+'" alt="지도 이미지"><svg class="mline" id="rtsvg" aria-hidden="true"></svg>'+pins+'</div><div class="ictl">'+ctl+'</div></div>'+
+    return '<div class="img" style="padding:6px"><div class="mapwrap'+(pinArm?' armed':'')+'" data-mappin="1"><img src="'+esc(bu(id))+'" alt="지도 이미지"><svg class="mline" id="rtsvg" aria-hidden="true"></svg>'+pins+'</div><div class="ictl">'+ctl+'</div></div>'+
       '<p class="hint">'+(pinArm?pinArm+'번 핀: 지도를 눌러 놓아요. 다시 누르면 위치가 옮겨져요':'왼쪽 동선의 "핀" 버튼을 누른 뒤 지도를 눌러 보세요')+'</p>';
   }
   function routeMapHtml(dk,maps,mapBtns){
@@ -1135,14 +1135,14 @@ button.trip.add{border:2px dashed var(--coral);background:transparent;box-shadow
     var tiles='<div class="tiles"><div class="tile"><b>다녀온 여행</b><span class="num">'+list.length+'개</span></div><div class="tile"><b>누적 경비</b><span class="num">'+won(totalCost)+'</span></div><div class="tile"><b>누적 여행일수</b><span class="num">'+totalDays+'일</span></div></div>';
     homeList=list;homeCard=function(x){
       var s=x.s,a=parseD(s.start),b=parseD(s.end),dates=a&&b?a.y+'.'+a.m+'.'+a.d+' ~ '+b.m+'.'+b.d:(a?a.y+'.'+a.m+'.'+a.d+' 출발':'날짜 미정');
-      return '<div class="tripw"><a class="trip" href="#'+x.id+'-cover"><div class="ph">'+(s.cover?'<img src="/_blob/'+esc(s.cover)+'" alt="">':'+')+'</div><b>'+esc(s.name||s.place||'이름 없는 여행')+'</b><small>'+esc(s.place&&s.name?s.place+' · ':'')+dates+'</small><span class="tot num">'+(x.o.total>0?won(x.o.total):'경비 미입력')+'</span></a><button type="button" class="tdel" data-deltrip="'+x.id+'" aria-label="여행 삭제"'+(canWrite&&!localMode?'':' disabled')+'>삭제</button></div>'};
+      return '<div class="tripw"><a class="trip" href="#'+x.id+'-cover"><div class="ph">'+(s.cover?'<img src="'+esc(bu(s.cover))+'" alt="">':'+')+'</div><b>'+esc(s.name||s.place||'이름 없는 여행')+'</b><small>'+esc(s.place&&s.name?s.place+' · ':'')+dates+'</small><span class="tot num">'+(x.o.total>0?won(x.o.total):'경비 미입력')+'</span></a><button type="button" class="tdel" data-deltrip="'+x.id+'" aria-label="여행 삭제"'+(canWrite&&!localMode?'':' disabled')+'>삭제</button></div>'};
     homeAdd='<button type="button" class="trip add" id="newtrip" data-newtrip="1"'+(canWrite&&!localMode?'':' disabled')+'>+ 새 여행 시작</button>';
     var maps='<div class="two"><div>'+stampSection(KR,'kr','KOREA','국내','곳')+'</div><div>'+stampSection(OS,'os','WORLD','해외','나라')+'</div></div>';
     return sec('MY MAP','다녀온 곳','모든 여행에서 다녀온 곳을 한 번에 모아요','')+maps+'<section class="sec"><div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">'+ttl('MY TRIPS','나의 여행')+'<button type="button" class="addb" data-newtrip="1" style="margin:0"'+(canWrite&&!localMode?'':' disabled')+'>+ 새 여행 추가</button></div><p class="hint ctr">다녀온 여행이 한곳에 차곡차곡 쌓여요</p>'+tripControls()+'<div id="tripgal">'+tripsHtml()+'</div></section>';
   }
   function tripRowHtml(x){
     var s=x.s,a=parseD(s.start),b=parseD(s.end),dates=a&&b?a.y+'.'+a.m+'.'+a.d+' ~ '+b.m+'.'+b.d:(a?a.y+'.'+a.m+'.'+a.d+' 출발':'날짜 미정');
-    return '<div class="trowW"><a class="trow" href="#'+x.id+'-cover"><span class="th">'+(s.cover?'<img src="/_blob/'+esc(s.cover)+'" alt="">':'+')+'</span><span class="tx"><b>'+esc(s.name||s.place||'이름 없는 여행')+'</b><small>'+esc(s.place&&s.name?s.place+' · ':'')+dates+'</small></span><span class="tot num">'+(x.o.total>0?won(x.o.total):'경비 미입력')+'</span></a><button type="button" class="tdel2" data-deltrip="'+x.id+'" aria-label="여행 삭제"'+(canWrite&&!localMode?'':' disabled')+'>삭제</button></div>';
+    return '<div class="trowW"><a class="trow" href="#'+x.id+'-cover"><span class="th">'+(s.cover?'<img src="'+esc(bu(s.cover))+'" alt="">':'+')+'</span><span class="tx"><b>'+esc(s.name||s.place||'이름 없는 여행')+'</b><small>'+esc(s.place&&s.name?s.place+' · ':'')+dates+'</small></span><span class="tot num">'+(x.o.total>0?won(x.o.total):'경비 미입력')+'</span></a><button type="button" class="tdel2" data-deltrip="'+x.id+'" aria-label="여행 삭제"'+(canWrite&&!localMode?'':' disabled')+'>삭제</button></div>';
   }
   function tripControls(){
     if(!homeList.length){homeYear='all';homeQ='';return ''}
@@ -1435,8 +1435,37 @@ button.trip.add{border:2px dashed var(--coral);background:transparent;box-shadow
       }).then(function(){return db.doc('form/main').delete()});
     }).catch(function(){});
   }
+  /* ---------- 브라우저 저장 모드 (claude.ai 밖에서 열었을 때) ---------- */
+  function bu(id){return id&&String(id).indexOf('data:')===0?id:'/_blob/'+id}
+  function localClaude(){
+    var KEY='traveldiary:v1',st={};
+    try{st=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){st={}}
+    var subs=[];
+    function persist(){try{localStorage.setItem(KEY,JSON.stringify(st));return true}catch(e){setSave('저장 공간이 가득 찼어요. 사진을 줄이거나 지워 주세요');return false}}
+    function deep(a,b){Object.keys(b).forEach(function(k){var v=b[k];if(v&&typeof v==='object'&&!Array.isArray(v)){if(!a[k]||typeof a[k]!=='object')a[k]={};deep(a[k],v)}else a[k]=v});return a}
+    function snapOf(col){var docs=Object.keys(st).filter(function(k){return k.indexOf(col+'/')===0}).map(function(k){var d=st[k];return{id:k.slice(col.length+1),data:function(){return JSON.parse(JSON.stringify(d))}}});return{docs:docs,empty:!docs.length,metadata:{hasPendingWrites:true}}}
+    function fire(){setTimeout(function(){subs.forEach(function(s){s()})},0)}
+    var db={
+      doc:function(p){return{
+        get:function(){return Promise.resolve({exists:!!st[p],data:function(){return JSON.parse(JSON.stringify(st[p]||{}))}})},
+        set:function(d){st[p]=JSON.parse(JSON.stringify(d));persist();fire();return Promise.resolve()},
+        update:function(d){st[p]=deep(st[p]||{},JSON.parse(JSON.stringify(d)));persist();return Promise.resolve()},
+        delete:function(){delete st[p];persist();fire();return Promise.resolve()},
+        onSnapshot:function(cb){var f=function(){cb({exists:!!st[p],data:function(){return JSON.parse(JSON.stringify(st[p]||{}))},metadata:{hasPendingWrites:true}})};f();return function(){}}
+      }},
+      collection:function(c){return{onSnapshot:function(cb){var f=function(){cb(snapOf(c))};subs.push(f);f();return function(){}}}}
+    };
+    var assets={upload:function(file){return new Promise(function(res,rej){
+      var fr=new FileReader();fr.onerror=rej;
+      fr.onload=function(){var im=new Image();im.onerror=rej;im.onload=function(){
+        var m=1100,w=im.width,h=im.height,r=Math.min(1,m/Math.max(w,h)),c=document.createElement('canvas');
+        c.width=Math.round(w*r);c.height=Math.round(h*r);c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+        res({id:c.toDataURL('image/jpeg',0.72)})};im.src=fr.result};
+      fr.readAsDataURL(file)})}};
+    return{use:function(n){return Promise.resolve(n==='db'?db:n==='assets'?assets:{can:function(){return true}})}};
+  }
   routeTab();
-  var cl=window.claude;
+  var cl=window.claude&&window.claude.use?window.claude:localClaude();
   if(!cl||!cl.use){startLocal('이 화면에서는 저장 기능을 쓸 수 없어요. 입력한 내용은 새로고침하면 사라져요.');return}
   var timeout=setTimeout(function(){if(!tripsLoaded)showStatus('저장된 데이터를 아직 불러오지 못했어요. 연결을 확인해 주세요.')},10000);
   Promise.all([cl.use('db'),cl.use('user'),Promise.resolve(cl.use('assets')).catch(function(){return null})]).then(function(r){
