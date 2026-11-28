@@ -1462,6 +1462,30 @@ button.trip.add{border:2px dashed var(--coral);background:transparent;box-shadow
         c.width=Math.round(w*r);c.height=Math.round(h*r);c.getContext('2d').drawImage(im,0,0,c.width,c.height);
         res({id:c.toDataURL('image/jpeg',0.72)})};im.src=fr.result};
       fr.readAsDataURL(file)})}};
+    (function(){
+      var bar=document.createElement('div');
+      bar.style.cssText='display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0 0;font-size:13px';
+      bar.innerHTML='<button type="button" class="addb" id="bk-out" style="margin:0">백업 저장</button><label class="addb" style="margin:0;cursor:pointer">백업 불러오기<input type="file" id="bk-in" accept=".json,application/json" style="display:none"></label><span class="hint">다른 기기로 옮길 때 써요</span>';
+      var tabs=$('tabs');tabs.parentNode.insertBefore(bar,tabs);
+      $('bk-out').onclick=function(){
+        var d=new Date(),n='여행다이어리백업-'+d.getFullYear()+pad2(d.getMonth()+1)+pad2(d.getDate())+'.json';
+        var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({app:'travel-diary',data:st})],{type:'application/json'}));a.download=n;document.body.appendChild(a);a.click();a.remove();setSave('백업 파일을 저장했어요');
+      };
+      $('bk-in').onchange=function(e){
+        var f=e.target.files&&e.target.files[0];e.target.value='';if(!f)return;
+        var fr=new FileReader();
+        fr.onload=function(){
+          var j;try{j=JSON.parse(fr.result)}catch(x){j=null}
+          if(!j||j.app!=='travel-diary'||!j.data){setSave('여행 다이어리 백업 파일이 아니에요');return}
+          var n=Object.keys(j.data).filter(function(k){return k.indexOf('trips/')===0}).length;
+          askConfirm('백업 파일을 불러올까요?','여행 '+n+'개를 가져와요. 같은 여행은 백업 내용으로 바뀌어요.',function(){
+            Object.keys(j.data).forEach(function(k){if(k.indexOf('trips/')===0||k==='meta/main')st[k]=j.data[k]});
+            if(persist()){setSave('불러왔어요');setTimeout(function(){location.hash='#home';location.reload()},300)}
+          });
+        };
+        fr.readAsText(f);
+      };
+    })();
     return{use:function(n){return Promise.resolve(n==='db'?db:n==='assets'?assets:{can:function(){return true}})}};
   }
   routeTab();
